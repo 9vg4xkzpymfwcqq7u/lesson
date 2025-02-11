@@ -1,33 +1,30 @@
 import random
-import asyncio
+import string
 from aiogram import Bot, Dispatcher, types
-from aiogram import F
-from aiogram import Application
+from aiogram.utils import executor
 
-API_TOKEN = '8031754163:AAHcga51N1WGI7ArBJUBO7_waBHCuQTLKzc'
+API_TOKEN = '8031754163:AAHcga51N1WGI7ArBJUBO7_waBHCuQTLKzc'  # Замените на токен вашего бота
 
+bot = Bot(token=API_TOKEN)
+dp = Dispatcher(bot)
 
+def generate_password(length=12):
+    """Генерация случайного пароля заданной длины."""
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for _ in range(length))
+    return password
 
-quotes = [
-    "Веруй в себя и ты уже на полпути к успеху.",
-    "Ваши ограничения — это только ваше воображение.",
-    "Толкайте себя, потому что никто другой этого не сделает.",
-    "Великие вещи никогда не происходят в зоне комфорта.",
-    "Мечтайте об этом. Желайте этого. Делайте это."
-]
+@dp.message_handler(commands=['start'])
+async def send_welcome(message: types.Message):
+    await message.reply("Привет! Напиши /generate, чтобы сгенерировать случайный пароль.")
 
-@app.command()
-async def start(update: types.Update):
-    await update.message.reply("Добро пожаловать! Используйте команду /motivate, чтобы получить вашу порцию мотивации!")
-
-@app.command()
-async def motivate(update: types.Update):
-    quote = random.choice(quotes)
-    await update.message.reply(quote)
-
-async def main():
-    await app.run_polling()
+@dp.message_handler(commands=['generate'])
+async def send_password(message: types.Message):
+    password = generate_password()
+    await message.reply(f"Сгенерированный пароль: {password}")
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    executor.start_polling(dp, skip_updates=True)
+
+
 
