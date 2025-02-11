@@ -3,7 +3,7 @@ import string
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
-API_TOKEN = '8031754163:AAHcga51N1WGI7ArBJUBO7_waBHCuQTLKzc'  # Замените на токен вашего бота
+API_TOKEN = '8031754163:AAHcga51N1WGI7ArBJUBO7_waBHCuQTLKzc'  
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
